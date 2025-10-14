@@ -9,7 +9,7 @@ export interface User extends Document{
     VerifyCodeExpiry:Date;
     isVerified:boolean;
     isAcceptingMessage:boolean;
-    message: Message[]
+    messages: Message[]
 }
 
 const UserSchema: Schema<User> = new Schema({
@@ -45,7 +45,7 @@ const UserSchema: Schema<User> = new Schema({
         type:Boolean,
         default:true
     },
-    message:[MessageSchema]
+    messages:[MessageSchema]
 })
 
 const UserModel =(mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User",UserSchema);
