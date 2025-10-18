@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
             id: "credentials",
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "text" },
+                identifier: { label: "Email/Username", type: "text" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials: any): Promise<any> {
@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
     ],
 
     pages: {
-        signIn: '/sign-in',  // we dont need to design pages.
+        signIn: '/sign-in',
     },
 
     session: {
@@ -56,7 +56,6 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXT_AUTH_SECRET,
 
     callbacks: {
-
         async jwt({ token, user }) {
             if (user) {
                 token._id = user._id?.toString();
@@ -76,6 +75,5 @@ export const authOptions: NextAuthOptions = {
             }
             return session
         },
-
     }
 }
