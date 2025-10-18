@@ -55,7 +55,7 @@ const SignInPage = () => {
           description: "You have successfully signed in to TruthLink.",
           action: {
             label: "Continue",
-            onClick: () => router.replace('/dashboard'),
+            onClick: () => router.replace('dashboard'),
           },
         });
         router.replace('/dashboard');

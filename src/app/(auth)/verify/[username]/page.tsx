@@ -42,7 +42,7 @@ const VerifyAccount = () => {
       });
 
       toast.success('Account verified successfully!', {
-        description: 'You can now sign in to your account.',
+        description: response.data.message,
         action: {
           label: 'Sign In',
           onClick: () => router.replace('/sign-in'),
