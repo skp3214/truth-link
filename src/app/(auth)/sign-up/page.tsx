@@ -77,7 +77,7 @@ const page = () => {
     setIsSubmitting(true);
     try {
       const response = await axios.post<ApiResponse>('/api/sign-up', data);
-      toast("Account created successfully!", {
+      toast.success("Account created successfully!", {
         description: response.data.message,
         action: {
           label: "Go to Verify",
@@ -89,7 +89,7 @@ const page = () => {
     } catch (error) {
       console.error("Error in signup", error);
       const axiosError = error as AxiosError<ApiResponse>;
-      toast("Sign up failed", {
+      toast.error("Sign up failed", {
         description: axiosError.response?.data.message ?? "Something went wrong. Please try again.",
         action: {
           label: "Retry",

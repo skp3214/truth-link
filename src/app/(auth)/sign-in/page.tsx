@@ -43,15 +43,15 @@ const SignInPage = () => {
       });
 
       if (result?.error) {
-        toast("Sign in failed", {
-          description: "Invalid credentials. Please check your email/username and password.",
+        toast.warning("Sign in failed", {
+          description: result?.error,
           action: {
             label: "Retry",
             onClick: () => console.log("Retry sign in"),
           },
         });
       } else if (result?.url) {
-        toast("Welcome back!", {
+        toast.success("Welcome back!", {
           description: "You have successfully signed in to TruthLink.",
           action: {
             label: "Continue",
@@ -62,8 +62,8 @@ const SignInPage = () => {
       }
     } catch (error) {
       console.error("Error in sign in", error);
-      toast("Sign in failed", {
-        description: "Something went wrong. Please try again.",
+      toast.error("Sign in failed", {
+        description: error as string,
         action: {
           label: "Retry",
           onClick: () => console.log("Retry sign in"),
