@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Loader2, Eye, EyeOff, User, Lock, LogIn, Sparkles } from 'lucide-react';
+import { Loader2, Eye, EyeOff, User, Lock, LogIn } from 'lucide-react';
 
 const SignInPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -198,7 +198,7 @@ const SignInPage = () => {
           {/* Footer */}
           <div className="text-center">
             <p className="text-slate-600 dark:text-slate-400">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link 
                 href="/sign-up" 
                 className="font-semibold text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"

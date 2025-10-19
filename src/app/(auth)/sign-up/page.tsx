@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from 'react-hook-form';
 import * as z from "zod";
 import Link from 'next/link';
-import { useDebounceCallback, useDebounceValue } from 'usehooks-ts';
+import { useDebounceCallback } from 'usehooks-ts';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { signUpSchema } from '@/schemas/signUpSchema';
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Loader2, Eye, EyeOff, CheckCircle, XCircle, User, Mail, Lock, Sparkles } from 'lucide-react';
-const page = () => {
+const SignUpPage = () => {
   const [username, setUsername] = useState('');
   const [usernameMessage, setUsernameMessage] = useState('');
   const [isUsernameAvailable, setIsUsernameAvailable] = useState<boolean | null>(null);
@@ -300,4 +300,4 @@ const page = () => {
   )
 }
 
-export default page
+export default SignUpPage
