@@ -3,17 +3,10 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
 import { User } from "next-auth";
-import mongoose from "mongoose";
 
 export async function DELETE(request: Request, { params }: { params: { messageid: string } }) {
-    const messageId = params.messageid;
-    
-    if (!messageId || !mongoose.Types.ObjectId.isValid(messageId)) {
-        return Response.json({
-            success: false,
-            message: "Invalid message ID format"
-        }, { status: 400 });
-    }
+    const { messageid } = await params;
+    const messageId = messageid;
 
     try {
         await dbConnect();
