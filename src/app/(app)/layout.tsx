@@ -16,7 +16,6 @@ export default function AppLayout({
     <>
       <Navbar />
       {children}
-      <Toaster />
     </>
   );
 }
