@@ -160,10 +160,12 @@ const PublicProfilePage = () => {
                   <Button
                     key={index}
                     variant="outline"
-                    className="w-full text-left justify-start h-auto p-3 text-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 border-yellow-200"
+                    className="w-full text-left justify-start h-auto min-h-[3rem] p-3 text-sm hover:bg-yellow-50 dark:hover:bg-yellow-900/20 border-yellow-200 whitespace-normal break-words"
                     onClick={() => handleSuggestionClick(suggestion)}
                   >
-                    {suggestion}
+                    <span className="text-left leading-relaxed block w-full">
+                      {suggestion}
+                    </span>
                   </Button>
                 ))
               ) : (
