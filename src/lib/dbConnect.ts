@@ -9,10 +9,11 @@ interface MongooseCache {
   conn: Connection | null;
   promise: Promise<Connection> | null;
 }
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let cached: MongooseCache = (global as any).mongoose;
 
 if (!cached) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   cached = (global as any).mongoose = { conn: null, promise: null };
 }
 

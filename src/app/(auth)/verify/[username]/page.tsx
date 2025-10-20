@@ -177,7 +177,7 @@ const VerifyAccount = () => {
           {/* Resend code section */}
           <div className="mt-6 text-center">
             <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
-              Didn't receive the code?
+              Did not receive the code?
             </p>
             <button
               onClick={handleResendCode}

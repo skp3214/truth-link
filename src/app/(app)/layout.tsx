@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {

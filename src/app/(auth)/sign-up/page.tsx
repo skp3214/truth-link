@@ -152,7 +152,6 @@ const SignUpPage = () => {
                           placeholder="Choose a unique username" 
                           {...field} 
                           onChange={(e) => {
-                            const value = e.target.value;
                             field.onChange(e);
                             debounced(e.target.value);
                           }}

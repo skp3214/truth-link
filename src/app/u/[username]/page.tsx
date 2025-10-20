@@ -53,7 +53,7 @@ const PublicProfilePage = () => {
     }
 
     loadInitialSuggestions()
-  }, [])
+  }, [complete])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

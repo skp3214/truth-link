@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     }
 };
 
-export async function GET(request: Request) {
+export async function GET() {
     await dbConnect();
 
     const session = await getServerSession(authOptions);
@@ -74,6 +74,7 @@ export async function GET(request: Request) {
             isAcceptingMessages: foundUser.isAcceptingMessage
         }, { status: 200 });
     } catch (error) {
+        console.log(error);
         return Response.json({
             success: false,
             message: "Error in getting message acceptance status"
