@@ -1,4 +1,4 @@
-# 🔗 Truth Link
+# 🔗 Truth Link [Live Link](https://truth-link.onrender.com/)
 
 **Anonymous Messaging Platform Built with Next.js**
 
@@ -8,6 +8,8 @@ Truth Link is a modern, secure anonymous messaging platform that enables authent
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+
+![alt text](image.png)
 
 ## ✨ Features
 
@@ -165,56 +167,11 @@ truth-link/
 - **Share Profile**: Copy unique profile link
 - **Message Statistics**: Track your anonymous conversations
 
-## 🛠️ API Routes
+## ScreenShot
 
-### Authentication
-- `POST /api/sign-up` - User registration
-- `POST /api/verify-code` - Email verification
-- `GET /api/check-username-unique` - Username availability
+![alt text](image-1.png)
 
-### Messaging
-- `POST /api/send-message` - Send anonymous message
-- `GET /api/get-messages` - Retrieve user messages
-- `DELETE /api/delete-message/[id]` - Delete message
-
-### Settings
-- `POST /api/accept-messages` - Toggle message acceptance
-- `GET /api/accept-messages` - Get current message settings
-
-### AI Features
-- `POST /api/suggest-messages` - Generate message suggestions
-
-## 🎨 Design System
-
-### Color Palette
-- **Primary**: Yellow/Amber theme for warmth and positivity
-- **Background**: Gradient from yellow-50 to orange-50
-- **Text**: Balanced contrast with yellow-800 and yellow-600
-- **Accents**: Complementary colors for actions and states
-
-### Components
-- **Custom UI Components**: Built on Radix UI primitives
-- **Form Components**: React Hook Form with Zod validation
-- **Loading States**: Smooth loading animations
-- **Responsive Design**: Mobile-first approach
-
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy with one click
-
-### Other Platforms
-
-The app can be deployed on any platform that supports Next.js:
-- Netlify
-- Railway
-- DigitalOcean App Platform
-- AWS Amplify
-
+![alt text](image-2.png)
 ## 📝 Environment Variables Reference
 
 | Variable | Description | Required |
@@ -235,37 +192,6 @@ We welcome contributions! Please follow these steps:
 4. Push to the branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
-### Development Guidelines
-
-- Follow the existing code style
-- Add TypeScript types for new features
-- Write descriptive commit messages
-- Test your changes thoroughly
-- Update documentation as needed
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [Next.js](https://nextjs.org/) - The React Framework
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [Radix UI](https://www.radix-ui.com/) - Low-level UI primitives
-- [NextAuth.js](https://next-auth.js.org/) - Authentication for Next.js
-- [Mongoose](https://mongoosejs.com/) - MongoDB object modeling
-- [Resend](https://resend.com/) - Email delivery service
-- [Google AI](https://ai.google.dev/) - AI-powered features
-
-## 📞 Support
-
-If you have any questions or need help with setup, please:
-
-1. Check the [Issues](https://github.com/yourusername/truth-link/issues) page
-2. Create a new issue with detailed information
-3. Contact the maintainers
-
----
 
 <div align="center">
 
