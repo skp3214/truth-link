@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { MessageSquare, Send, Lightbulb, X } from 'lucide-react'
 import { toast } from 'sonner'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { ApiResponse } from '@/types/ApiResponse'
 import { useCompletion } from '@ai-sdk/react'
 
@@ -28,7 +28,7 @@ const PublicProfilePage = () => {
         .map(s => s.trim())
         .filter(s => s.length > 0)
         .slice(0, 3)
-      
+
       setSuggestions(parsedSuggestions)
       setShowSuggestions(true)
       setHasLoadedInitial(true)
@@ -68,16 +68,17 @@ const PublicProfilePage = () => {
         username: params.username,
         content,
       })
-
-      toast.success('Message sent!', {
-        description: 'Your anonymous message has been sent successfully.',
+      toast.success(response.data.message, {
+        description: response.data.message,
       })
       setContent('')
       setShowSuggestions(false)
-    } catch (error: unknown) {
-      toast.error('Error', {
-        description: error instanceof Error ? error.message : 'Failed to send message',
-      })
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      const errorMessage = axiosError.response?.data?.message || 'Failed to send message';
+      toast.info('Info', {
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false)
     }
@@ -90,11 +91,10 @@ const PublicProfilePage = () => {
 
   const handleGetSuggestions = async () => {
     if (!content.trim()) {
-      // If no content, show initial suggestions again
       setShowSuggestions(true)
       return
     }
-    
+
     console.log('Generating suggestions for content:', content)
     try {
       setSuggestions([])
@@ -110,13 +110,12 @@ const PublicProfilePage = () => {
     setShowSuggestions(false)
   }
 
-  // Parse the completion for display
   const displaySuggestions = completion
     ? completion
-        .split('||')
-        .map(s => s.trim())
-        .filter(s => s.length > 0)
-        .slice(0, 3)
+      .split('||')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+      .slice(0, 3)
     : suggestions
 
   return (
