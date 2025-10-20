@@ -46,6 +46,28 @@ export async function POST(req: Request) {
         }
     } catch (error) {
         console.error('Error in suggest-messages API:', error);
-        return new Response('Internal Server Error', { status: 500 });
+        
+        // Handle quota exceeded error specifically
+        if (error instanceof Error && (error.message.includes('quota') || error.message.includes('429'))) {
+            return new Response(
+                JSON.stringify({ 
+                    error: 'Rate limit exceeded. Please try again later.' 
+                }), 
+                { 
+                    status: 429,
+                    headers: { 'Content-Type': 'application/json' }
+                }
+            );
+        }
+        
+        return new Response(
+            JSON.stringify({ 
+                error: 'Unable to generate suggestions at the moment.' 
+            }), 
+            { 
+                status: 500,
+                headers: { 'Content-Type': 'application/json' }
+            }
+        );
     }
 }

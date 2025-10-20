@@ -16,8 +16,9 @@ const PublicProfilePage = () => {
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [suggestions, setSuggestions] = useState<string[]>([])
-  const [showSuggestions, setShowSuggestions] = useState(true) // Always show by default
-  const [hasLoadedInitial, setHasLoadedInitial] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false) // Don't show by default
+  const [hasLoadedInitial, setHasLoadedInitial] = useState(true) // Skip auto-load
+  const [hasError, setHasError] = useState(false)
 
   const { completion, complete, isLoading: isGenerating } = useCompletion({
     api: '/api/suggest-messages',
@@ -32,28 +33,34 @@ const PublicProfilePage = () => {
       setSuggestions(parsedSuggestions)
       setShowSuggestions(true)
       setHasLoadedInitial(true)
+      setHasError(false) // Reset error state on success
     },
     onError: (error) => {
       console.error('Error generating suggestions:', error)
-      toast.error('Failed to generate suggestions')
+      setHasError(true)
       setHasLoadedInitial(true)
+      // Only show error toast if it's not a rate limit error
+      const errorMessage = error?.message || '';
+      if (!errorMessage.includes('quota') && !errorMessage.includes('429')) {
+        toast.error('Failed to generate suggestions')
+      }
     }
   })
 
-  // Load initial suggestions when component mounts
-  useEffect(() => {
-    const loadInitialSuggestions = async () => {
-      try {
-        console.log('Loading initial suggestions...')
-        await complete('')
-      } catch (error) {
-        console.error('Error loading initial suggestions:', error)
-        setHasLoadedInitial(true)
-      }
-    }
+  // Don't auto-load suggestions on mount to prevent quota issues
+  // useEffect(() => {
+  //   const loadInitialSuggestions = async () => {
+  //     try {
+  //       console.log('Loading initial suggestions...')
+  //       await complete('')
+  //     } catch (error) {
+  //       console.error('Error loading initial suggestions:', error)
+  //       setHasLoadedInitial(true)
+  //     }
+  //   }
 
-    loadInitialSuggestions()
-  }, [complete])
+  //   loadInitialSuggestions()
+  // }, [complete])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -90,8 +97,11 @@ const PublicProfilePage = () => {
   }
 
   const handleGetSuggestions = async () => {
-    if (!content.trim()) {
-      setShowSuggestions(true)
+    // Don't make API call if there was a previous error (likely quota exceeded)
+    if (hasError) {
+      toast.warning('Suggestions temporarily unavailable', {
+        description: 'Please try again later or write your message manually.'
+      })
       return
     }
 
@@ -99,10 +109,15 @@ const PublicProfilePage = () => {
     try {
       setSuggestions([])
       setShowSuggestions(true)
-      await complete(content)
+      await complete(content.trim() || '')
     } catch (error) {
       console.error('Error generating suggestions:', error)
-      toast.error('Failed to generate suggestions')
+      setHasError(true)
+      // Only show error toast if it's not a rate limit error
+      const errorMessage = error instanceof Error ? error.message : '';
+      if (!errorMessage.includes('quota') && !errorMessage.includes('429')) {
+        toast.error('Failed to generate suggestions')
+      }
     }
   }
 
@@ -131,8 +146,8 @@ const PublicProfilePage = () => {
           </p>
         </div>
 
-        {/* Initial Suggestions - Show while loading or when we have suggestions */}
-        {showSuggestions && (hasLoadedInitial || isGenerating) && (
+        {/* Suggestions - Only show when explicitly requested */}
+        {showSuggestions && !hasError && (
           <Card className="bg-white/60 dark:bg-gray-800/60 border-yellow-200 dark:border-yellow-700/50 mb-4">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -197,12 +212,13 @@ const PublicProfilePage = () => {
                   type="button"
                   variant="outline"
                   size="sm"
-                  disabled={isGenerating}
+                  disabled={isGenerating || hasError}
                   onClick={handleGetSuggestions}
-                  className="text-yellow-700 border-yellow-300 hover:bg-yellow-50"
+                  className="text-yellow-700 border-yellow-300 hover:bg-yellow-50 disabled:opacity-50"
+                  title={hasError ? 'Suggestions temporarily unavailable due to rate limits' : 'Get AI-powered message suggestions'}
                 >
                   <Lightbulb className="w-3 h-3 mr-1" />
-                  {isGenerating ? 'Generating...' : 'Suggest Messages'}
+                  {isGenerating ? 'Generating...' : hasError ? 'Unavailable' : 'Suggest Messages'}
                 </Button>
                 <span className="text-yellow-600 dark:text-yellow-400">
                   {content.length}/300
