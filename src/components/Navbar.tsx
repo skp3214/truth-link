@@ -22,14 +22,6 @@ const Navbar = () => {
                             <span className="text-gray-900 font-medium">
                                 Welcome, {user.username || user.email}
                             </span>
-                            <Link href="/dashboard">
-                                <Button 
-                                    variant="outline" 
-                                    className="border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-yellow-400 transition-all duration-200"
-                                >
-                                    Dashboard
-                                </Button>
-                            </Link>
                             <Button 
                                 onClick={() => signOut()} 
                                 variant="outline" 
