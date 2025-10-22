@@ -13,7 +13,6 @@ import axios, { AxiosError } from 'axios'
 import { ApiResponse } from '@/types/ApiResponse'
 import { Message } from '@/models/message.model'
 import MessageCard from '@/components/MessageCard'
-import Navbar from '@/components/Navbar'
 import { acceptMessageSchema } from '@/schemas/acceptMessageSchema'
 import * as z from 'zod'
 
@@ -50,8 +49,9 @@ const DashboardPage = () => {
       const response = await axios.get<ApiResponse>('/api/accept-messages');
       setValue('acceptMessages', response.data.isAcceptingMessages as boolean)
     } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
       toast.error('Error', {
-        description: 'Failed to fetch message settings',
+        description: axiosError.response?.data.message ?? 'Failed to fetch messages',
       })
     } finally {
       setIsSwitchLoading(false)

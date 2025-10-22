@@ -9,8 +9,9 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as z from 'zod';
+import { ApiResponse } from '@/types/ApiResponse';
 
 type ResetPasswordForm = z.infer<typeof resetPasswordSchema>;
 
@@ -39,17 +40,18 @@ export default function ResetPasswordPage() {
     try {
       const response = await axios.post('/api/reset-password', data);
       toast.success("Password reset successfully!", {
-        description: "You can now sign in with your new password.",
+        description: response.data.message,
         action: {
           label: "Go to Sign In",
           onClick: () => router.replace('/sign-in'),
         },
       });
       setTimeout(() => router.push('/sign-in'), 2000);
-    } catch (error: any) {
-      toast.warning("Error", {
-        description: error.response?.data?.message || 'Something went wrong',
-      });
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast.error('Error', {
+        description: axiosError.response?.data.message ?? 'Failed to fetch messages',
+      })
     } finally {
       setIsSubmitting(false);
     }

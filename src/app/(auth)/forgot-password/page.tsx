@@ -9,8 +9,9 @@ import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as z from 'zod';
+import { ApiResponse } from '@/types/ApiResponse';
 
 type ForgotPasswordForm = z.infer<typeof forgotPasswordSchema>;
 
@@ -31,17 +32,18 @@ export default function ForgotPasswordPage() {
     try {
       const response = await axios.post('/api/forgot-password', data);
       toast.success("Password reset link sent!", {
-        description: "Check your email for the reset link.",
+        description: response.data.message,
         action: {
           label: "Go to Dashboard",
           onClick: () => router.replace('/dashboard'),
         },
       });
       setEmailSent(true);
-    } catch (error: any) {
-      toast.warning("Error", {
-        description: error.response?.data?.message || 'Something went wrong',
-      });
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast.error('Error', {
+        description: axiosError.response?.data.message ?? 'Failed to fetch messages',
+      })
     } finally {
       setIsSubmitting(false);
     }
@@ -56,7 +58,7 @@ export default function ForgotPasswordPage() {
           </h1>
           <p className="mb-4 text-gray-300">Enter your email or username to reset your password</p>
         </div>
-        
+
         {!emailSent ? (
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div>
@@ -96,7 +98,7 @@ export default function ForgotPasswordPage() {
             </div>
           </div>
         )}
-        
+
         <div className="text-center mt-4">
           <p className="text-gray-400">
             Remember your password?{' '}

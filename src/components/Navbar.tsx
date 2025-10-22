@@ -5,7 +5,7 @@ import Link from "next/link"
 import { User } from 'next-auth'
 import React, { useState } from 'react'
 import { Button } from "./ui/button"
-import { Loader2, LogIn, LogOut } from "lucide-react"
+import { Loader2, LogOut } from "lucide-react"
 import ThemeToggle from "./ThemeToggle"
 
 const Navbar = () => {
