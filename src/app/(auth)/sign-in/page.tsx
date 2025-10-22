@@ -82,10 +82,10 @@ const SignInPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-black dark:via-gray-900 dark:to-gray-800 flex items-center justify-center p-4 relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-slate-400/5"
+        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-yellow-400/10"
           style={{
             backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
             backgroundSize: '60px 60px',
@@ -96,12 +96,12 @@ const SignInPage = () => {
 
       <div className="w-full max-w-md relative">
         {/* Main Card */}
-        <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-xl border border-yellow-200/50 dark:border-slate-700/50 rounded-2xl shadow-2xl shadow-yellow-500/10 dark:shadow-slate-900/50 p-8 space-y-8">
+        <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-xl border border-yellow-200/50 dark:border-gray-700/50 rounded-2xl shadow-2xl shadow-yellow-500/10 dark:shadow-black/50 p-8 space-y-8">
 
           {/* Header */}
           <div className="text-center space-y-2">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-amber-500 dark:from-yellow-300 dark:to-amber-400 rounded-2xl shadow-lg shadow-yellow-500/25 mb-4">
-              <LogIn className="w-8 h-8 text-white dark:text-slate-900" />
+              <LogIn className="w-8 h-8 text-white dark:text-black" />
             </div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 dark:from-yellow-300 dark:to-amber-300 bg-clip-text text-transparent">
               Welcome Back

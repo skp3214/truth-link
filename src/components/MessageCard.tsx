@@ -53,7 +53,7 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
     }
 
     return (
-        <Card className="relative bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] dark:from-yellow-900/20 dark:to-amber-900/20 dark:border-yellow-700/50">
+        <Card className="relative bg-gradient-to-br from-yellow-50 to-amber-50 border-yellow-200 hover:shadow-lg transition-all duration-300 hover:scale-[1.02] dark:from-gray-800 dark:to-gray-900 dark:border-gray-700">
             <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
                     <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-400">
@@ -97,7 +97,7 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
                 </div>
             </CardHeader>
             <CardContent className="pt-0">
-                <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 border border-yellow-100 dark:border-yellow-800/30">
+                <div className="bg-white/60 dark:bg-gray-700/60 rounded-lg p-4 border border-yellow-100 dark:border-gray-600">
                     <p className="text-gray-800 dark:text-gray-200 leading-relaxed break-words">
                         {message.content}
                     </p>

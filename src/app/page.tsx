@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -23,9 +24,20 @@ export default function Home() {
     router.push('/dashboard');
   }
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-900/10 dark:via-amber-900/10 dark:to-orange-900/10">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-black dark:via-gray-900 dark:to-gray-800 transition-colors relative">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-yellow-400/10"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
+            backgroundSize: '60px 60px',
+            backgroundPosition: '0 0, 30px 30px'
+          }}>
+        </div>
+      </div>
+      <Navbar />
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-16 relative">
         <div className="text-center max-w-4xl mx-auto">
           <div className="flex justify-center mb-8">
             <div className="bg-yellow-100 dark:bg-yellow-900/30 p-4 rounded-full">
@@ -33,17 +45,17 @@ export default function Home() {
             </div>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold text-yellow-800 dark:text-yellow-200 mb-6">
-            Truth<span className="text-yellow-600">Link</span>
+          <h1 className="text-5xl md:text-7xl font-bold text-yellow-800 dark:text-yellow-300 mb-6">
+            Truth<span className="text-yellow-600 dark:text-yellow-400">Link</span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-yellow-700 dark:text-yellow-300 mb-8 leading-relaxed">
+          <p className="text-xl md:text-2xl text-yellow-700 dark:text-yellow-200 mb-8 leading-relaxed">
             Connect anonymously. Share honestly. Build genuine relationships through authentic conversations.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             {session ? (
-              <Button type="submit" disabled={isHandlingDash} onClick={handleDashboard} size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 text-lg">
+              <Button type="submit" disabled={isHandlingDash} onClick={handleDashboard} size="lg" className="bg-yellow-600 dark:bg-yellow-500 cursor-pointer hover:bg-yellow-700 dark:hover:bg-yellow-600 text-white px-8 py-4 text-lg">
                 {isHandlingDash ? (
                   <>
                     <Loader2 className='mr-2 h-5 w-5 animate-spin' />
@@ -57,7 +69,7 @@ export default function Home() {
                 )}
               </Button>
             ) : (
-              <Button type="submit" disabled={isGettingStarted} onClick={handleGettingStarted} size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 text-lg">
+              <Button type="submit" disabled={isGettingStarted} onClick={handleGettingStarted} size="lg" className="bg-yellow-600 dark:bg-yellow-500 cursor-pointer hover:bg-yellow-700 dark:hover:bg-yellow-600 text-white px-8 py-4 text-lg">
                 {isGettingStarted ? (
                   <>
                     <Loader2 className='mr-2 h-5 w-5 animate-spin' />
@@ -71,7 +83,7 @@ export default function Home() {
                 )}
               </Button>
             )}
-            <Button variant="outline" size="lg" className="border-yellow-600 text-yellow-700 hover:bg-yellow-50 px-8 py-4 text-lg">
+            <Button variant="outline" size="lg" className="border-yellow-600 dark:border-yellow-400 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 px-8 py-4 text-lg">
               Learn More
             </Button>
           </div>
@@ -83,10 +95,10 @@ export default function Home() {
             <div className="bg-yellow-100 dark:bg-yellow-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
               <Shield className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
             </div>
-            <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-200 mb-4">
+            <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-300 mb-4">
               100% Anonymous
             </h3>
-            <p className="text-yellow-700 dark:text-yellow-300">
+            <p className="text-yellow-700 dark:text-yellow-200">
               Share your thoughts without revealing your identity. Complete privacy guaranteed.
             </p>
           </div>
@@ -95,10 +107,10 @@ export default function Home() {
             <div className="bg-yellow-100 dark:bg-yellow-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
               <Users className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
             </div>
-            <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-200 mb-4">
+            <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-300 mb-4">
               Real Connections
             </h3>
-            <p className="text-yellow-700 dark:text-yellow-300">
+            <p className="text-yellow-700 dark:text-yellow-200">
               Build authentic relationships through honest, judgment-free conversations.
             </p>
           </div>
@@ -107,10 +119,10 @@ export default function Home() {
             <div className="bg-yellow-100 dark:bg-yellow-900/30 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
               <Zap className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
             </div>
-            <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-200 mb-4">
+            <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-300 mb-4">
               Instant Messaging
             </h3>
-            <p className="text-yellow-700 dark:text-yellow-300">
+            <p className="text-yellow-700 dark:text-yellow-200">
               Send and receive messages instantly. No registration required to send.
             </p>
           </div>
@@ -123,17 +135,17 @@ export default function Home() {
           <div className="flex justify-center mb-6">
             <MessageSquare className="w-8 h-8 text-yellow-600 dark:text-yellow-400" />
           </div>
-          <p className="text-yellow-700 dark:text-yellow-300 mb-4">
+          <p className="text-yellow-700 dark:text-yellow-200 mb-4">
             © 2024 TruthLink. Connecting hearts through honest conversations.
           </p>
-          <div className="flex justify-center space-x-6 text-sm text-yellow-600 dark:text-yellow-400">
-            <Link href="/privacy" className="hover:text-yellow-800 dark:hover:text-yellow-200">
+          <div className="flex justify-center space-x-6 text-sm text-yellow-600 dark:text-yellow-300">
+            <Link href="/privacy" className="hover:text-yellow-800 dark:hover:text-yellow-100">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-yellow-800 dark:hover:text-yellow-200">
+            <Link href="/terms" className="hover:text-yellow-800 dark:hover:text-yellow-100">
               Terms of Service
             </Link>
-            <Link href="/contact" className="hover:text-yellow-800 dark:hover:text-yellow-200">
+            <Link href="/contact" className="hover:text-yellow-800 dark:hover:text-yellow-100">
               Contact Us
             </Link>
           </div>

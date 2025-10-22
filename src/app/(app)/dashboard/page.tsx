@@ -13,6 +13,7 @@ import axios, { AxiosError } from 'axios'
 import { ApiResponse } from '@/types/ApiResponse'
 import { Message } from '@/models/message.model'
 import MessageCard from '@/components/MessageCard'
+import Navbar from '@/components/Navbar'
 import { acceptMessageSchema } from '@/schemas/acceptMessageSchema'
 import * as z from 'zod'
 
@@ -32,28 +33,25 @@ const DashboardPage = () => {
 
   const acceptMessages = watch('acceptMessages')
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && session?.user?.username) {
-      const baseUrl = `${window.location.protocol}//${window.location.host}`
-      setProfileUrl(`${baseUrl}/u/${session?.user.username}`)
-    }
-  }, [session?.user?.username])
+  const handleDeleteMessage = (messageId: string) => {
+    setMessages(messages.filter(message => message._id !== messageId))
+  }
 
-  const copyToClipboard = useCallback(() => {
+  const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl)
     toast.success('URL Copied!', {
       description: 'Profile URL has been copied to clipboard.',
     })
-  }, [profileUrl])
+  }
 
   const fetchAcceptMessages = useCallback(async () => {
     setIsSwitchLoading(true)
     try {
       const response = await axios.get<ApiResponse>('/api/accept-messages');
-      setValue('acceptMessages', response.data.isAcceptingMessages as boolean);
-    } catch {
+      setValue('acceptMessages', response.data.isAcceptingMessages as boolean)
+    } catch (error) {
       toast.error('Error', {
-        description: 'Failed to fetch message',
+        description: 'Failed to fetch message settings',
       })
     } finally {
       setIsSwitchLoading(false)
@@ -65,22 +63,17 @@ const DashboardPage = () => {
     setIsSwitchLoading(false);
     try {
       const response = await axios.get<ApiResponse>('/api/get-messages')
-      setMessages(response.data.messages || []);
-      if (response.data.messages?.length == 0) {
-        toast.info("No Messages", {
-          description: "You have no messages"
-        });
-      }
-      if (response.data.messages?.length != 0 && refresh) {
-        toast.success('Refreshed Messages!', {
-          description: 'Showing latest messages.',
-        });
+      setMessages(response.data.messages || [])
+      if (refresh) {
+        toast.success('Refreshed Messages', {
+          description: 'Showing latest messages',
+        })
       }
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
-      toast.error('Error in fetching message', {
-        description: axiosError.message,
-      });
+      toast.error('Error', {
+        description: axiosError.response?.data.message ?? 'Failed to fetch messages',
+      })
     } finally {
       setIsLoading(false);
       setIsSwitchLoading(false);
@@ -91,69 +84,88 @@ const DashboardPage = () => {
     if (!session || !session.user) return
     fetchAcceptMessages();
     fetchMessages();
+
+    const { username } = session.user;
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    const profileUrl = `${baseUrl}/u/${username}`;
+    setProfileUrl(profileUrl);
   }, [session, setValue, fetchAcceptMessages, fetchMessages]);
 
   const handleSwitchChange = async () => {
     try {
       const response = await axios.post<ApiResponse>('/api/accept-messages', {
         acceptMessages: !acceptMessages,
-      })
-      setValue('acceptMessages', !acceptMessages)
+      });
+      setValue('acceptMessages', !acceptMessages);
       toast.success('Success', {
         description: response.data.message,
       })
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
       toast.error('Error', {
-        description: axiosError.message,
-      });
+        description: axiosError.response?.data.message ?? 'Failed to update message settings',
+      })
     }
   }
 
-
-  const handleMessageDelete = useCallback((messageId: string) => {
-    setMessages(messages.filter((message) => message._id !== messageId))
-  }, [messages])
-
-
   if (!session || !session.user) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-900/10 dark:via-amber-900/10 dark:to-orange-900/10 flex items-center justify-center p-4">
-        <div className="text-center">
-          <h1 className="text-xl md:text-2xl font-bold text-yellow-800 dark:text-yellow-200">Please sign in</h1>
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-black dark:via-gray-900 dark:to-gray-800 flex items-center justify-center p-4 relative">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute inset-0 bg-yellow-400/5 dark:bg-yellow-400/10"
+            style={{
+              backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
+              backgroundSize: '60px 60px',
+              backgroundPosition: '0 0, 30px 30px'
+            }}>
+          </div>
+        </div>
+        <div className="text-center relative">
+          <h1 className="text-xl md:text-2xl font-bold text-yellow-800 dark:text-yellow-300">Please sign in</h1>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-900/10 dark:via-amber-900/10 dark:to-orange-900/10 p-4 md:p-6">
-      <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-black dark:via-gray-900 dark:to-gray-800 relative">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-yellow-400/10"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
+            backgroundSize: '60px 60px',
+            backgroundPosition: '0 0, 30px 30px'
+          }}>
+        </div>
+      </div>
+      <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 p-4 md:p-6 relative">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-yellow-800 dark:text-yellow-200 mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-yellow-800 dark:text-yellow-300 mb-2">
             User Dashboard
           </h1>
-          <p className="text-sm md:text-base text-yellow-600 dark:text-yellow-400">
+          <p className="text-sm md:text-base text-yellow-600 dark:text-yellow-200">
             Manage your anonymous messaging experience
           </p>
         </div>
 
         {/* Copy Your Link Section */}
         <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-4 md:p-6 border border-yellow-200 dark:border-yellow-700/50">
-          <h2 className="text-xl md:text-2xl font-semibold text-yellow-800 dark:text-yellow-200 mb-4">
+          <h2 className="text-xl md:text-2xl font-semibold text-yellow-800 dark:text-yellow-300 mb-4">
             Copy Your Link
           </h2>
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Input
               type="text"
               value={profileUrl}
               disabled
-              className="flex-1 bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-700 text-sm md:text-base"
+              className="flex-1 bg-yellow-50 dark:bg-gray-700 border-yellow-300 dark:border-gray-600 text-yellow-800 dark:text-yellow-200"
             />
             <Button
               onClick={copyToClipboard}
-              className="bg-yellow-600 hover:bg-yellow-700 text-white w-full sm:w-auto"
+              className="bg-yellow-600 dark:bg-yellow-500 hover:bg-yellow-700 dark:hover:bg-yellow-600 text-white px-6"
             >
               <Copy className="w-4 h-4 mr-2" />
               Copy
@@ -165,10 +177,10 @@ const DashboardPage = () => {
         <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-4 md:p-6 border border-yellow-200 dark:border-yellow-700/50">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h3 className="text-lg md:text-xl font-semibold text-yellow-800 dark:text-yellow-200">
+              <h3 className="text-lg md:text-xl font-semibold text-yellow-800 dark:text-yellow-300">
                 Accept Messages
               </h3>
-              <p className="text-yellow-600 dark:text-yellow-400 text-sm">
+              <p className="text-yellow-600 dark:text-yellow-200 text-sm">
                 Allow others to send you anonymous messages
               </p>
             </div>
@@ -177,6 +189,7 @@ const DashboardPage = () => {
               checked={acceptMessages}
               onCheckedChange={handleSwitchChange}
               disabled={isSwitchLoading}
+              className="data-[state=checked]:bg-yellow-500 data-[state=unchecked]:bg-gray-300 dark:data-[state=unchecked]:bg-gray-600"
             />
           </div>
         </div>
@@ -185,19 +198,27 @@ const DashboardPage = () => {
         <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-4 md:p-6 border border-yellow-200 dark:border-yellow-700/50">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h3 className="text-lg md:text-xl font-semibold text-yellow-800 dark:text-yellow-200">
+              <h3 className="text-lg md:text-xl font-semibold text-yellow-800 dark:text-yellow-300">
                 Messages
               </h3>
-              <p className="text-yellow-600 dark:text-yellow-400 text-sm">
+              <p className="text-yellow-600 dark:text-yellow-200 text-sm">
                 Refresh to get your latest messages
               </p>
             </div>
             <Button
-              onClick={() => fetchMessages(true)}
+              onClick={(e) => {
+                e.preventDefault();
+                fetchMessages(true);
+              }}
+              variant="outline"
+              className="border-yellow-600 dark:border-yellow-400 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
               disabled={isLoading}
-              className="bg-yellow-600 hover:bg-yellow-700 text-white w-full sm:w-auto"
             >
-              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              {isLoading ? (
+                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <RefreshCw className="w-4 h-4 mr-2" />
+              )}
               Refresh
             </Button>
           </div>
@@ -206,22 +227,20 @@ const DashboardPage = () => {
         {/* Messages Display */}
         <div className="space-y-4">
           {messages.length > 0 ? (
-            <div className="grid gap-4">
-              {messages.map((message, index) => (
-                <MessageCard
-                  key={index}
-                  message={message}
-                  onMessageDelete={handleMessageDelete}
-                />
-              ))}
-            </div>
+            messages.map((message) => (
+              <MessageCard
+                key={message._id as string}
+                message={message}
+                onMessageDelete={handleDeleteMessage}
+              />
+            ))
           ) : (
-            <div className="bg-white/60 dark:bg-gray-800/60 rounded-xl p-6 md:p-8 border border-yellow-200 dark:border-yellow-700/50 text-center">
-              <MessageSquare className="w-8 h-8 md:w-12 md:h-12 text-yellow-400 mx-auto mb-4" />
-              <h3 className="text-lg md:text-xl font-semibold text-yellow-700 dark:text-yellow-300 mb-2">
+            <div className="text-center py-12 bg-white/60 dark:bg-gray-800/60 rounded-xl border border-yellow-200 dark:border-yellow-700/50">
+              <MessageSquare className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-yellow-800 dark:text-yellow-300 mb-2">
                 No messages yet
               </h3>
-              <p className="text-yellow-600 dark:text-yellow-400 text-sm md:text-base">
+              <p className="text-yellow-600 dark:text-yellow-200 text-sm md:text-base">
                 When you receive anonymous messages, they will appear here.
               </p>
             </div>

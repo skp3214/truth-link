@@ -110,7 +110,7 @@ const SignUpPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4 relative">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-black dark:via-gray-900 dark:to-gray-800 flex items-center justify-center p-4 relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute inset-0 bg-yellow-400/5 dark:bg-slate-400/5"
@@ -124,7 +124,7 @@ const SignUpPage = () => {
 
       <div className="w-full max-w-md relative">
         {/* Main Card */}
-        <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-xl border border-yellow-200/50 dark:border-slate-700/50 rounded-2xl shadow-2xl shadow-yellow-500/10 dark:shadow-slate-900/50 p-8 space-y-8">
+        <div className="bg-white/80 dark:bg-gray-900/90 backdrop-blur-xl border border-yellow-200/50 dark:border-gray-700/50 rounded-2xl shadow-2xl shadow-yellow-500/10 dark:shadow-black/50 p-8 space-y-8">
 
           {/* Header */}
           <div className="text-center space-y-2">

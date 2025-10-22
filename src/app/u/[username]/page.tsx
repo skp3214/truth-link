@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import axios, { AxiosError } from 'axios'
 import { ApiResponse } from '@/types/ApiResponse'
 import { useCompletion } from '@ai-sdk/react'
+import ThemeToggle from '@/components/ThemeToggle'
 
 const PublicProfilePage = () => {
   const params = useParams<{ username: string }>()
@@ -115,8 +116,22 @@ const PublicProfilePage = () => {
     : suggestions
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-900/10 dark:via-amber-900/10 dark:to-orange-900/10 flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-black dark:via-gray-900 dark:to-gray-800 flex items-center justify-center p-4 sm:p-6 relative">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-yellow-400/10"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
+            backgroundSize: '60px 60px',
+            backgroundPosition: '0 0, 30px 30px'
+          }}>
+        </div>
+      </div>
+      {/* Theme Toggle */}
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeToggle />
+      </div>
+      <div className="w-full max-w-md relative">
         <div className="text-center mb-6 sm:mb-8">
           <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 text-yellow-600 dark:text-yellow-400 mx-auto mb-4" />
           <h1 className="text-2xl sm:text-3xl font-bold text-yellow-800 dark:text-yellow-200 mb-2">
