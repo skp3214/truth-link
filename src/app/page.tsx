@@ -1,13 +1,27 @@
 'use client'
 
 import Link from "next/link";
-import { MessageSquare, Shield, Users, Zap } from "lucide-react";
+import { Loader2, LogIn, MessageSquare, Shield, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
   const { data: session } = useSession();
+  const router = useRouter();
+  const [isGettingStarted, setIsGettingStarted] = useState(false);
+  const [isHandlingDash, setIsHandlingDash] = useState(false);
 
+  const handleGettingStarted = () => {
+    setIsGettingStarted(true);
+    router.push('/sign-up');
+  }
+
+  const handleDashboard = () => {
+    setIsHandlingDash(true);
+    router.push('/dashboard');
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-yellow-900/10 dark:via-amber-900/10 dark:to-orange-900/10">
       {/* Hero Section */}
@@ -18,28 +32,44 @@ export default function Home() {
               <MessageSquare className="w-16 h-16 text-yellow-600 dark:text-yellow-400" />
             </div>
           </div>
-          
+
           <h1 className="text-5xl md:text-7xl font-bold text-yellow-800 dark:text-yellow-200 mb-6">
             Truth<span className="text-yellow-600">Link</span>
           </h1>
-          
+
           <p className="text-xl md:text-2xl text-yellow-700 dark:text-yellow-300 mb-8 leading-relaxed">
             Connect anonymously. Share honestly. Build genuine relationships through authentic conversations.
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             {session ? (
-              <Link href="/dashboard">
-                <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 text-lg">
-                  Go to Dashboard
-                </Button>
-              </Link>
+              <Button type="submit" disabled={isHandlingDash} onClick={handleDashboard} size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 text-lg">
+                {isHandlingDash ? (
+                  <>
+                    <Loader2 className='mr-2 h-5 w-5 animate-spin' />
+                    Dashboard ...
+                  </>
+                ) : (
+                  <>
+                    <LogIn className='mr-2 h-5 w-5' />
+                    Dashboard
+                  </>
+                )}
+              </Button>
             ) : (
-              <Link href="/sign-up">
-                <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 text-lg">
-                  Get Started Free
-                </Button>
-              </Link>
+              <Button type="submit" disabled={isGettingStarted} onClick={handleGettingStarted} size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 text-lg">
+                {isGettingStarted ? (
+                  <>
+                    <Loader2 className='mr-2 h-5 w-5 animate-spin' />
+                    Getting Started ...
+                  </>
+                ) : (
+                  <>
+                    <LogIn className='mr-2 h-5 w-5' />
+                    Get Started
+                  </>
+                )}
+              </Button>
             )}
             <Button variant="outline" size="lg" className="border-yellow-600 text-yellow-700 hover:bg-yellow-50 px-8 py-4 text-lg">
               Learn More
@@ -83,31 +113,6 @@ export default function Home() {
             <p className="text-yellow-700 dark:text-yellow-300">
               Send and receive messages instantly. No registration required to send.
             </p>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="text-center mt-20">
-          <div className="bg-white/60 dark:bg-gray-800/60 p-12 rounded-2xl border border-yellow-200 dark:border-yellow-700/50 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-yellow-800 dark:text-yellow-200 mb-6">
-              Ready to start honest conversations?
-            </h2>
-            <p className="text-yellow-700 dark:text-yellow-300 mb-8 text-lg">
-              Join thousands of users who are already connecting authentically on TruthLink.
-            </p>
-            {session ? (
-              <Link href="/dashboard">
-                <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-12 py-4 text-lg">
-                  Go to Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <Link href="/sign-up">
-                <Button size="lg" className="bg-yellow-600 hover:bg-yellow-700 text-white px-12 py-4 text-lg">
-                  Create Your Profile
-                </Button>
-              </Link>
-            )}
           </div>
         </div>
       </div>

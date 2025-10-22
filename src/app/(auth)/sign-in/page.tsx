@@ -23,6 +23,8 @@ import { Loader2, Eye, EyeOff, User, Lock, LogIn } from 'lucide-react';
 const SignInPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isGoingToSignUp, setIsGoingToSignUp] = useState(false);
+
   const router = useRouter();
 
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -32,6 +34,11 @@ const SignInPage = () => {
       password: ''
     }
   });
+
+  const handleGoToSignUp = () => {
+    setIsGoingToSignUp(true);
+    router.push('/sign-up');
+  };
 
   const onSubmit = async (data: z.infer<typeof signInSchema>) => {
     setIsSubmitting(true);
@@ -58,7 +65,7 @@ const SignInPage = () => {
             onClick: () => router.replace('dashboard'),
           },
         });
-        router.replace('/dashboard');
+        router.push('/dashboard');
       }
     } catch (error) {
       console.error("Error in sign in", error);
@@ -78,19 +85,19 @@ const SignInPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4 relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-slate-400/5" 
-             style={{
-               backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
-               backgroundSize: '60px 60px',
-               backgroundPosition: '0 0, 30px 30px'
-             }}>
+        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-slate-400/5"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
+            backgroundSize: '60px 60px',
+            backgroundPosition: '0 0, 30px 30px'
+          }}>
         </div>
       </div>
-      
+
       <div className="w-full max-w-md relative">
         {/* Main Card */}
         <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-xl border border-yellow-200/50 dark:border-slate-700/50 rounded-2xl shadow-2xl shadow-yellow-500/10 dark:shadow-slate-900/50 p-8 space-y-8">
-          
+
           {/* Header */}
           <div className="text-center space-y-2">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-amber-500 dark:from-yellow-300 dark:to-amber-400 rounded-2xl shadow-lg shadow-yellow-500/25 mb-4">
@@ -107,7 +114,7 @@ const SignInPage = () => {
           {/* Form */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              
+
               {/* Identifier Field */}
               <FormField
                 name="identifier"
@@ -120,8 +127,8 @@ const SignInPage = () => {
                     <FormControl>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                        <Input 
-                          placeholder="Enter your email or username" 
+                        <Input
+                          placeholder="Enter your email or username"
                           {...field}
                           className="pl-10 h-12 border-yellow-200 dark:border-slate-600 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-yellow-400/20 bg-white/50 dark:bg-slate-700/50"
                         />
@@ -144,8 +151,8 @@ const SignInPage = () => {
                     <FormControl>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                        <Input 
-                          placeholder="Enter your password" 
+                        <Input
+                          placeholder="Enter your password"
                           {...field}
                           type={showPassword ? "text" : "password"}
                           className="pl-10 pr-10 h-12 border-yellow-200 dark:border-slate-600 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-yellow-400/20 bg-white/50 dark:bg-slate-700/50"
@@ -166,8 +173,8 @@ const SignInPage = () => {
 
               {/* Forgot Password */}
               <div className="text-right">
-                <Link 
-                  href="/forgot-password" 
+                <Link
+                  href="/forgot-password"
                   className="text-sm text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"
                 >
                   Forgot your password?
@@ -175,8 +182,8 @@ const SignInPage = () => {
               </div>
 
               {/* Submit Button */}
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isSubmitting}
                 className="w-full h-12 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 dark:from-yellow-400 dark:to-amber-400 dark:hover:from-yellow-500 dark:hover:to-amber-500 text-white dark:text-slate-900 font-semibold rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
@@ -197,15 +204,23 @@ const SignInPage = () => {
 
           {/* Footer */}
           <div className="text-center">
-            <p className="text-slate-600 dark:text-slate-400">
-              Don&apos;t have an account?{' '}
-              <Link 
-                href="/sign-up" 
-                className="font-semibold text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"
-              >
-                Create one
-              </Link>
-            </p>
+            {isGoingToSignUp ? (
+              <div className="flex justify-center items-center gap-2 text-yellow-600 dark:text-yellow-400">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Redirecting...</span>
+              </div>
+            ) : (
+              <p className="text-slate-600 dark:text-slate-400">
+                Do not have an account?{" "}
+                <button
+                  type="button"
+                  onClick={handleGoToSignUp}
+                  className="font-semibold text-yellow-600 cursor-pointer dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors bg-transparent p-0 border-none outline-none"
+                >
+                  Create One
+                </button>
+              </p>
+            )}
           </div>
 
           {/* Terms */}

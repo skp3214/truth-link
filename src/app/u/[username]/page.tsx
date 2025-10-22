@@ -16,8 +16,7 @@ const PublicProfilePage = () => {
   const [content, setContent] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [suggestions, setSuggestions] = useState<string[]>([])
-  const [showSuggestions, setShowSuggestions] = useState(false) // Don't show by default
-  const [hasLoadedInitial, setHasLoadedInitial] = useState(true) // Skip auto-load
+  const [showSuggestions, setShowSuggestions] = useState(false) 
   const [hasError, setHasError] = useState(false)
 
   const { completion, complete, isLoading: isGenerating } = useCompletion({
@@ -32,35 +31,17 @@ const PublicProfilePage = () => {
 
       setSuggestions(parsedSuggestions)
       setShowSuggestions(true)
-      setHasLoadedInitial(true)
-      setHasError(false) // Reset error state on success
+      setHasError(false) 
     },
     onError: (error) => {
       console.error('Error generating suggestions:', error)
       setHasError(true)
-      setHasLoadedInitial(true)
-      // Only show error toast if it's not a rate limit error
       const errorMessage = error?.message || '';
       if (!errorMessage.includes('quota') && !errorMessage.includes('429')) {
         toast.error('Failed to generate suggestions')
       }
     }
   })
-
-  // Don't auto-load suggestions on mount to prevent quota issues
-  // useEffect(() => {
-  //   const loadInitialSuggestions = async () => {
-  //     try {
-  //       console.log('Loading initial suggestions...')
-  //       await complete('')
-  //     } catch (error) {
-  //       console.error('Error loading initial suggestions:', error)
-  //       setHasLoadedInitial(true)
-  //     }
-  //   }
-
-  //   loadInitialSuggestions()
-  // }, [complete])
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

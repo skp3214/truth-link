@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   title: "Truth Link - Anonymous Messaging",
   description: "Share your thoughts anonymously. Connect authentically.",
   icons: {
-    icon: "/image.png",
-    shortcut: "/image.png",
-    apple: "/image.png",
+    icon: "/images/truthlink.png",
+    shortcut: "/images/truthlink.png",
+    apple: "/images/truthlink.png",
   },
 };
 

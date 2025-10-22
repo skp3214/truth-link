@@ -28,6 +28,8 @@ const SignUpPage = () => {
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isGoingToSignIn, setIsGoingToSignIn] = useState(false);
+
   const router = useRouter();
 
   const debounced = useDebounceCallback(setUsername, 500);
@@ -40,6 +42,11 @@ const SignUpPage = () => {
       password: ''
     }
   });
+
+  const handleGoToSignIn = () => {
+    setIsGoingToSignIn(true);
+    router.push('/sign-in');
+  };
 
   useEffect(() => {
     const checkUsernameUnique = async () => {
@@ -106,19 +113,19 @@ const SignUpPage = () => {
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800 flex items-center justify-center p-4 relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-slate-400/5" 
-             style={{
-               backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
-               backgroundSize: '60px 60px',
-               backgroundPosition: '0 0, 30px 30px'
-             }}>
+        <div className="absolute inset-0 bg-yellow-400/5 dark:bg-slate-400/5"
+          style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, #fbbf24 2px, transparent 2px), radial-gradient(circle at 75% 75%, #fbbf24 2px, transparent 2px)`,
+            backgroundSize: '60px 60px',
+            backgroundPosition: '0 0, 30px 30px'
+          }}>
         </div>
       </div>
-      
+
       <div className="w-full max-w-md relative">
         {/* Main Card */}
         <div className="bg-white/80 dark:bg-slate-800/90 backdrop-blur-xl border border-yellow-200/50 dark:border-slate-700/50 rounded-2xl shadow-2xl shadow-yellow-500/10 dark:shadow-slate-900/50 p-8 space-y-8">
-          
+
           {/* Header */}
           <div className="text-center space-y-2">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-amber-500 dark:from-yellow-300 dark:to-amber-400 rounded-2xl shadow-lg shadow-yellow-500/25 mb-4">
@@ -135,7 +142,7 @@ const SignUpPage = () => {
           {/* Form */}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              
+
               {/* Username Field */}
               <FormField
                 name="username"
@@ -148,9 +155,9 @@ const SignUpPage = () => {
                     <FormControl>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                        <Input 
-                          placeholder="Choose a unique username" 
-                          {...field} 
+                        <Input
+                          placeholder="Choose a unique username"
+                          {...field}
                           onChange={(e) => {
                             field.onChange(e);
                             debounced(e.target.value);
@@ -174,13 +181,12 @@ const SignUpPage = () => {
                       </div>
                     </FormControl>
                     {usernameMessage && (
-                      <p className={`text-sm font-medium ${
-                        isUsernameAvailable === true
-                          ? 'text-green-600 dark:text-green-400'
-                          : isUsernameAvailable === false
-                            ? 'text-red-600 dark:text-red-400'
-                            : 'text-slate-600 dark:text-slate-400'
-                      }`}>
+                      <p className={`text-sm font-medium ${isUsernameAvailable === true
+                        ? 'text-green-600 dark:text-green-400'
+                        : isUsernameAvailable === false
+                          ? 'text-red-600 dark:text-red-400'
+                          : 'text-slate-600 dark:text-slate-400'
+                        }`}>
                         {usernameMessage}
                       </p>
                     )}
@@ -201,8 +207,8 @@ const SignUpPage = () => {
                     <FormControl>
                       <div className="relative">
                         <Mail className="absolute left-3 top-3 h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                        <Input 
-                          placeholder="Enter your email address" 
+                        <Input
+                          placeholder="Enter your email address"
                           {...field}
                           type="email"
                           className="pl-10 h-12 border-yellow-200 dark:border-slate-600 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-yellow-400/20 bg-white/50 dark:bg-slate-700/50"
@@ -226,8 +232,8 @@ const SignUpPage = () => {
                     <FormControl>
                       <div className="relative">
                         <Lock className="absolute left-3 top-3 h-5 w-5 text-yellow-600 dark:text-yellow-400" />
-                        <Input 
-                          placeholder="Create a strong password" 
+                        <Input
+                          placeholder="Create a strong password"
                           {...field}
                           type={showPassword ? "text" : "password"}
                           className="pl-10 pr-10 h-12 border-yellow-200 dark:border-slate-600 focus:border-yellow-400 dark:focus:border-yellow-400 focus:ring-yellow-400/20 bg-white/50 dark:bg-slate-700/50"
@@ -247,8 +253,8 @@ const SignUpPage = () => {
               />
 
               {/* Submit Button */}
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={isSubmitting}
                 className="w-full h-12 bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 dark:from-yellow-400 dark:to-amber-400 dark:hover:from-yellow-500 dark:hover:to-amber-500 text-white dark:text-slate-900 font-semibold rounded-xl shadow-lg shadow-yellow-500/25 hover:shadow-yellow-500/40 transition-all duration-200 transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
@@ -269,15 +275,23 @@ const SignUpPage = () => {
 
           {/* Footer */}
           <div className="text-center">
-            <p className="text-slate-600 dark:text-slate-400">
-              Already have an account?{' '}
-              <Link 
-                href="/sign-in" 
-                className="font-semibold text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors"
-              >
-                Sign in
-              </Link>
-            </p>
+              {isGoingToSignIn ? (
+                <div className="flex justify-center items-center gap-2 text-yellow-600 dark:text-yellow-400">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Redirecting...</span>
+                </div>
+              ) : (
+                <p className="text-slate-600 dark:text-slate-400">
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={handleGoToSignIn}
+                    className="font-semibold text-yellow-600 cursor-pointer dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 transition-colors bg-transparent p-0 border-none outline-none"
+                  >
+                    Sign in
+                  </button>
+                </p>
+              )}
           </div>
 
           {/* Terms */}

@@ -3,13 +3,19 @@
 import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 import { User } from 'next-auth'
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from "./ui/button"
+import { Loader2, LogIn, LogOut } from "lucide-react"
 
 const Navbar = () => {
     const { data: session } = useSession();
     const user = session?.user as User;
-
+    const [isLogingOut, setIsLogingOut] = useState(false);
+    const handleLogout = async () => {
+        setIsLogingOut(true);
+        await signOut();
+        setIsLogingOut(false);
+    }
     return (
         <nav className="bg-gradient-to-r from-yellow-400 via-amber-400 to-yellow-500 border-b border-yellow-600/30 px-6 py-4 shadow-lg">
             <div className="flex items-center justify-between max-w-7xl mx-auto">
@@ -22,12 +28,22 @@ const Navbar = () => {
                             <span className="text-gray-900 font-medium">
                                 Welcome, {user.username || user.email}
                             </span>
-                            <Button 
-                                onClick={() => signOut()} 
-                                variant="outline" 
+                            <Button
+                                onClick={handleLogout}
+                                variant="outline"
                                 className="border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-yellow-400 transition-all duration-200"
                             >
-                                Logout
+                                {isLogingOut ? (
+                                    <>
+                                        <Loader2 className='mr-2 h-5 w-5 animate-spin' />
+                                        Logging Out ....
+                                    </>
+                                ) : (
+                                    <>
+                                        <LogOut className='mr-2 h-5 w-5' />
+                                        LogOut
+                                    </>
+                                )}
                             </Button>
                         </>
                     ) : (
@@ -38,8 +54,8 @@ const Navbar = () => {
                                 </Button>
                             </Link>
                             <Link href='/sign-up'>
-                                <Button 
-                                    variant="outline" 
+                                <Button
+                                    variant="outline"
                                     className="border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-yellow-400 transition-all duration-200"
                                 >
                                     Sign Up
