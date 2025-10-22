@@ -1,4 +1,4 @@
-# 🔗 Truth Link [Live Link](https://truth-link.onrender.com/)
+# 🔗 Truth Link [Live Link](https://truth-links.vercel.app/)
 
 **Anonymous Messaging Platform Built with Next.js**
 
